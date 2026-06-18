@@ -1,0 +1,23 @@
+# Runtime data
+data/
+*.log
+*.session
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Personal config (use config.example.json instead)
+config.json
+
+# WorkBuddy internals
+_skillhub_meta.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

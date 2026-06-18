@@ -1,0 +1,24 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Config (contains personal topics/templates) — use config.example.json instead
+config.json
+
+# Runtime data (session history, replied records, logs)
+data/
+*.log
+*.session
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# WorkBuddy internals
+_skillhub_meta.json
