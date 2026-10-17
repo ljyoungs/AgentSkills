@@ -1,0 +1,4 @@
+interface:
+  display_name: "老高叙事方法 · 原创故事策划"
+  short_description: "从选题到完整口播与分镜，用有证据的线索推进故事，并审核内容和发布包装"
+  default_prompt: "使用 $laogao-story-advisor，根据我的选题和资料设计能持续推进的原创故事，并检查事实、逻辑和观看收益。"
