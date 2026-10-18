@@ -6,7 +6,7 @@
 
 | 分类 | 技能 | 用途 | 版本／依赖 |
 | --- | --- | --- | --- |
-| **内容创作** `content-creation` | [老高叙事方法 · laogao-story-advisor](skills/content-creation/laogao-story-advisor/) | 选题、递进故事结构、完整口播／分镜、内容与发布包装审核 | v1.0.0；文字策划无必需外部服务 |
+| **内容创作** `content-creation` | [老高叙事方法 · laogao-story-advisor](skills/content-creation/laogao-story-advisor/) | 选题、递进故事结构、完整口播／分镜、内容与发布包装审核 | v1.1.0；文字策划无必需外部服务 |
 | **社媒运营** `social-media` | [抖音智能引流 · douyin-traffic-psy](skills/social-media/douyin-traffic-psy/) | 评论扫描、关键词匹配和半自动回复 | 原有V3系列；需要其README所列Chrome、WorkBuddy与MCP环境 |
 
 机器可读目录：[catalog.json](catalog.json)。类别按实际技能扩展，不预建空类别。
@@ -20,6 +20,10 @@
 ```
 
 查看[输入材料](skills/content-creation/laogao-story-advisor/examples/ecoli/input.md)、[结构示范](skills/content-creation/laogao-story-advisor/examples/ecoli/structure.md)和[审稿示范](skills/content-creation/laogao-story-advisor/examples/review-demo.md)。内容来自方法整理与实际创作反馈，非老高本人或官方作品，不含真人声音。
+
+v1.1增加[两期原片的参照与规则映射](skills/content-creation/laogao-story-advisor/references/episode-mapping.md)、[具体叙事改写手册](skills/content-creation/laogao-story-advisor/references/narrative-mechanics.md)、[大肠杆菌完整口播](skills/content-creation/laogao-story-advisor/examples/ecoli/full-script.md)与[全稿分镜](skills/content-creation/laogao-story-advisor/examples/ecoli/storyboard.md)，以及[事实正确但平淡的审稿例子](skills/content-creation/laogao-story-advisor/examples/borderline-review.md)。
+
+[新输入文字试用记录](evaluations/laogao-story-advisor/v1.1.0/report.md)包含给定材料、两组首次答案和匿名复核。结果支持本轮交付可用，不证明稳定优于未加载Skill或已验证爆款效果。
 
 ## 安装与使用
 

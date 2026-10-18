@@ -12,9 +12,10 @@ into a package. Research references do not grant redistribution rights; retain
 accurate file-level licenses and provenance.
 
 The narrative package contains original text guidance, not a media-generation
-runtime. Review its examples and material-specific conclusions without claiming
-an independent evaluation or actual audience performance. Do not run the legacy
-social-media automation merely to validate this repository.
+runtime. Distinguish authored examples, logged forward-test outputs, and actual
+audience performance. Describe the inputs, conditions and limits of any real
+evaluation; examples or format checks alone are not an independent evaluation.
+Do not run the legacy social-media automation merely to validate this repository.
 
 Before pushing, run `python scripts/validate_catalog.py` and
 `python -m unittest discover -s tests -v`. For the narrative package, also run the

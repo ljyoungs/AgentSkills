@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "repository": "https://github.com/ljyoungs/AgentSkills",
-  "updated": "2026-10-17",
+  "updated": "2026-10-18",
   "categories": [
     {"id": "content-creation", "label": "内容创作", "description": "选题、故事、口播、分镜及内容包装审核"},
     {"id": "social-media", "label": "社媒运营", "description": "平台运营、评论研究和有明确交互范围的辅助工具"}
@@ -13,12 +13,12 @@
       "activation_name": "laogao-story-advisor",
       "category": "content-creation",
       "path": "skills/content-creation/laogao-story-advisor",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "description": "原创选题、递进结构、完整口播与分镜，内容及封面标题正文审核",
       "license": "MIT",
       "distribution": "standalone",
       "requirements": ["能读取Markdown及相关参考文件的语言模型工具"],
-      "validation_scope": "格式、目录、相对引用、私有资产扫描和主会话示范；未作跨客户端独立盲测或传播效果验证"
+      "validation_scope": "格式、目录、相对引用、私有资产扫描；四项新输入的两组隔离首次文字输出及匿名复核；无跨客户端、受众或传播效果验证"
     },
     {
       "id": "douyin-traffic-psy",
