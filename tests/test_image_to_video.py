@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import unittest
+from unittest import mock
 import requests
 from PIL import Image
 import sys
@@ -58,12 +59,14 @@ class Provider:
         remote_error=False,
         unknown_submit=False,
         fail_download=False,
+        remote_message=None,
     ):
         self.content = content
         self.schema_changed = schema_changed
         self.remote_error = remote_error
         self.unknown_submit = unknown_submit
         self.fail_download = fail_download
+        self.remote_message = remote_message
         self.uploads = self.submits = self.polls = self.downloads = 0
 
     def get(self, url, **kwargs):
@@ -81,7 +84,9 @@ class Provider:
         if "/call/generate_video/" in url:
             self.polls += 1
             if self.remote_error:
-                return Response(lines=["event: error", "data: null"])
+                return Response(
+                    lines=["event: error", "data: " + json.dumps(self.remote_message)]
+                )
             f = {
                 "path": "/tmp/generated.mp4",
                 "url": i2v.BASE + "/gradio_api/file=/tmp/generated.mp4",
@@ -221,9 +226,101 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(r["status"], "remote_failed")
         self.assertIsNone(r["remote_error"])
         self.assertFalse(r["failure_reason_known"])
+        self.assertEqual(r["failure_category"], "unknown")
         with self.assertRaises(i2v.WorkflowError):
             i2v.resume(out, p)
         self.assertEqual(p.submits, 1)
+
+    def test_quota_failure_keeps_provider_countdown_and_never_resubmits(self):
+        message = "You have exceeded your ZeroGPU quota (120s requested vs. -1s left). Try again in 17:54:25."
+        p = Provider(remote_error=True, remote_message={"message": message})
+        out = self.out("quota")
+        with self.assertRaises(i2v.WorkflowError):
+            i2v.generate(self.plan(), out, p)
+        receipt = self.receipt(out)
+        self.assertEqual(receipt["failure_category"], "quota_exhausted")
+        self.assertEqual(receipt["provider_retry_after"], "17:54:25")
+        self.assertTrue(receipt["failure_reason_known"])
+        self.assertIsNone(receipt["automatic_retry_at"])
+        self.assertEqual(receipt["auth_mode"], "anonymous")
+        with self.assertRaises(i2v.WorkflowError):
+            i2v.resume(out, p)
+        self.assertEqual((p.uploads, p.submits, p.polls), (1, 1, 1))
+
+    def test_schema_reachable_does_not_imply_account_or_quota_verified(self):
+        result = i2v.doctor(Provider())
+        self.assertTrue(result["schema_matches"])
+        self.assertEqual(result["auth_mode"], "anonymous")
+        self.assertFalse(result["quota_verified"])
+
+    def test_embedded_adapter_matches_independently_installable_package(self):
+        package = Path(__file__).resolve().parents[1] / "skills/content-creation"
+        self.assertEqual(
+            (package / "image-to-video/scripts/image_to_video.py").read_bytes(),
+            (package / "photo-beat-video/scripts/image_to_video.py").read_bytes(),
+        )
+
+    def test_handoff_is_offline_portable_and_preserves_inputs(self):
+        out = self.out("handoff")
+        before = i2v.sha(self.image)
+        with mock.patch.object(
+            i2v.requests, "Session", side_effect=AssertionError("No network")
+        ):
+            result = i2v.handoff(self.plan(), out)
+        self.assertFalse(result["generation_submitted"])
+        self.assertEqual(result["submissions"], 0)
+        self.assertEqual(result["status"], "manual_generation_pending")
+        self.assertEqual(i2v.sha(self.image), before)
+        manifest = json.loads((out / "handoff.json").read_text(encoding="utf-8"))
+        self.assertEqual(i2v.sha(out / manifest["image"]), manifest["image_sha256"])
+        self.assertEqual(
+            (out / manifest["prompt_file"]).read_text(encoding="utf-8"),
+            self.plan()["prompt"],
+        )
+        self.assertNotIn(str(self.root), json.dumps(manifest))
+        with Image.open(out / manifest["image"]) as image:
+            self.assertEqual(image.size, (360, 640))
+        with self.assertRaises(FileExistsError):
+            i2v.handoff(self.plan(), out)
+
+    def test_handoff_rejects_reference_changed_after_planning(self):
+        image = self.out("reference").with_suffix(".png")
+        Image.new("RGB", (360, 640)).save(image)
+        plan = i2v.make_plan(image, self.prompt)
+        Image.new("RGB", (360, 640), "red").save(image)
+        out = self.out("changed-handoff")
+        with self.assertRaises(i2v.WorkflowError):
+            i2v.handoff(plan, out)
+        self.assertFalse(out.exists())
+
+    def test_handoff_cli_accepts_unicode_paths_and_writes_no_generation_receipt(self):
+        out = self.out("中文交接包")
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "-X",
+                "utf8",
+                i2v.__file__,
+                "handoff",
+                "--image",
+                str(self.image),
+                "--prompt-file",
+                str(self.prompt),
+                "--duration",
+                "5",
+                "--out",
+                str(out),
+            ],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            check=True,
+        )
+        result = json.loads(completed.stdout)
+        self.assertEqual(result["requested_settings"]["duration"], 5)
+        self.assertFalse(result["generation_submitted"])
+        self.assertTrue((out / "使用说明.txt").is_file())
+        self.assertFalse((out / "receipt.json").exists())
 
     def test_resume_download_never_uploads_or_submits_again(self):
         p = Provider(self.data, fail_download=True)

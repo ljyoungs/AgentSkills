@@ -236,6 +236,39 @@ class PhotoVideoTests(unittest.TestCase):
             self.assertEqual(previous["end_frame_exclusive"], following["start_frame"])
         self.assertEqual(plan["omitted_opening_photos"], [])
 
+    def test_intercut_keeps_requested_order_opening_count_and_short_still_holds(self):
+        styles = [self.photos[i] for i in [0, 3, 1, 3, 2]]
+        plan = video.create_plan(
+            self.photos,
+            template=self.template,
+            width=180,
+            height=320,
+            fps=12,
+            mode="sweet-cool",
+            styled=styles,
+            motion=self.motion,
+            max_opening=5,
+            styled_seconds=0.9,
+        )
+        stills = [s for s in plan["shots"] if s["kind"] == "styled"]
+        self.assertEqual(
+            [s["path"] for s in stills], [str(p.resolve()) for p in styles]
+        )
+        self.assertTrue(all(s["frames"] == 11 for s in stills))
+        self.assertEqual(len([s for s in plan["shots"] if s["kind"] == "original"]), 4)
+        self.assertEqual(plan["omitted_opening_photos"], [])
+        with self.assertRaises(ValueError):
+            self.plan(
+                mode="sweet-cool", styled=styles, motion=self.motion, styled_seconds=0
+            )
+        with self.assertRaises(ValueError):
+            self.plan(
+                mode="sweet-cool",
+                styled=styles,
+                motion=self.motion,
+                styled_seconds=float("nan"),
+            )
+
     def test_dense_photo_inputs_fit_the_available_frames(self):
         plan = video.create_plan(
             [self.photos[0]] * 15,

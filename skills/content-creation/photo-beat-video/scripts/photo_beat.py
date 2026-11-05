@@ -41,6 +41,7 @@ def create_plan(
     motion_duration=None,
     speed=0.8,
     max_opening=3,
+    styled_seconds=1.3,
 ):
     template = template or load(TEMPLATE)
     if not inputs:
@@ -107,10 +108,12 @@ def create_plan(
             append("original", asset, (end - cursor) / fps)
         omitted = []
     elif mode == "sweet-cool":
-        if len(styles) not in (2, 3) or motion is None:
+        if not styles or motion is None:
             raise ValueError(
-                "Full sweet-cool requires 2-3 generated whole images and a real motion clip; no silent photo-only fallback."
+                "Full sweet-cool requires generated whole images and a real motion clip; no silent photo-only fallback."
             )
+        if not math.isfinite(styled_seconds) or styled_seconds <= 0:
+            raise ValueError("Styled image hold duration must be finite and positive.")
         if duration is not None:
             raise ValueError(
                 "Full-template duration follows actual motion and stills; adjust the motion interval instead."
@@ -147,7 +150,7 @@ def create_plan(
         for asset in chosen:
             append("original", asset, 4.2 / len(chosen))
         for asset in styles:
-            append("styled", asset, 1.3)
+            append("styled", asset, styled_seconds)
         append(
             "motion",
             {
@@ -605,6 +608,7 @@ def main():
         cmd.add_argument("--motion-duration", type=float)
         cmd.add_argument("--speed", type=float, default=0.8)
         cmd.add_argument("--max-opening", type=int, default=3)
+        cmd.add_argument("--styled-seconds", type=float, default=1.3)
         if name == "make":
             cmd.add_argument("--cache-dir")
             cmd.add_argument("--out")
@@ -625,6 +629,7 @@ def main():
             motion_duration=args.motion_duration,
             speed=args.speed,
             max_opening=args.max_opening,
+            styled_seconds=args.styled_seconds,
         )
         if args.command == "plan":
             result = plan

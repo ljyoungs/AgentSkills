@@ -7,6 +7,7 @@ import hashlib
 import json
 import math
 from pathlib import Path
+import re
 import subprocess
 import sys
 import time
@@ -126,6 +127,7 @@ def make_plan(
         "seed": seed,
         "audio_mode": audio_mode,
         "provider": "LTX-2.3 first-frame public demonstration",
+        "auth_mode": "anonymous",
         "space": SPACE,
         "base": BASE,
         "method": "First image plus text; no video motion-control input.",
@@ -149,7 +151,81 @@ def doctor(session=None):
         "service": BASE,
         "schema_matches": True,
         "parameters": names,
+        "auth_mode": "anonymous",
+        "quota_verified": False,
         "availability_scope": "Schema reachable; generation quota not verified.",
+    }
+
+
+def handoff(plan, out):
+    """Prepare a portable local bundle; never sign in, upload, or submit a task."""
+    if sha(plan["image"]) != plan["image_sha256"]:
+        raise WorkflowError("Input image changed after planning.")
+    out = Path(out).resolve()
+    out.mkdir(parents=True, exist_ok=False)
+    image = out / "reference.png"
+    with Image.open(plan["image"]) as im:
+        ImageOps.exif_transpose(im).convert("RGB").save(image)
+    (out / "prompt.txt").write_text(plan["prompt"], encoding="utf-8")
+    manifest = {
+        "status": "manual_generation_pending",
+        "created_at": now(),
+        "image": image.name,
+        "image_sha256": sha(image),
+        "original_image_sha256": plan["image_sha256"],
+        "prompt_file": "prompt.txt",
+        "requested_settings": {
+            k: plan[k] for k in ("duration", "width", "height", "seed", "audio_mode")
+        },
+        "suggested_space": SPACE,
+        "settings_scope": "Suggestions only; confirm current model controls and available quota in the chosen service.",
+        "generation_submitted": False,
+        "submissions": 0,
+        "event_id": None,
+        "quota_verified": False,
+        "published": False,
+    }
+    save(out / "handoff.json", manifest)
+    (out / "使用说明.txt").write_text(
+        "本包只在本地准备了参考图、动作提示词和建议参数，尚未上传或生成。\n"
+        "1. 在你选定的图生视频服务中查看可用模型与额度；可参考：\n"
+        + SPACE
+        + "\n2. 将 reference.png 放入首帧图片输入，粘贴 prompt.txt；"
+        "按 handoff.json 中的建议设置一条短镜头，实际参数以页面支持为准。\n"
+        "3. 确认账户、模型及费用后只提交一条；保存任务编号或页面结果。"
+        "遇到额度不足等待恢复，未知提交先查看已有任务，不连续重试。\n"
+        "4. 下载原始 MP4 交回助手，进行完整解码及脸、手、道具、边缘检查；"
+        "生成声音是否使用由当前项目决定。\n"
+        "浏览器登录不会自动让随包的匿名 Python 客户端使用该账号额度。\n",
+        encoding="utf-8",
+    )
+    return {**manifest, "bundle": str(out)}
+
+
+def remote_failure_details(value):
+    """Classify only explicit provider messages; null errors stay unknown."""
+    message = value if isinstance(value, str) else ""
+    if isinstance(value, dict):
+        message = " ".join(
+            value[k] for k in ("error", "message") if isinstance(value.get(k), str)
+        )
+    text = message.lower()
+    quota = ("zerogpu quota" in text or "gpu quota" in text) and any(
+        word in text for word in ("exceeded", "exhausted", "not enough", "insufficient")
+    )
+    countdown = re.search(r"try again in\s+(\d+:\d{2}:\d{2})", message, re.IGNORECASE)
+    return {
+        "failure_reason_known": bool(message.strip()),
+        "failure_category": "quota_exhausted"
+        if quota
+        else ("remote_error" if message.strip() else "unknown"),
+        "provider_retry_after": countdown.group(1) if quota and countdown else None,
+        "automatic_retry_at": None,
+        "next_action": (
+            "Wait for the provider quota reset; no automatic retry or account rotation. Browser sign-in does not authenticate this anonymous client."
+            if quota
+            else "Inspect the original provider error; do not infer quota exhaustion or resubmit automatically."
+        ),
     }
 
 
@@ -298,16 +374,7 @@ def wait_remote(root, receipt, session, wait_seconds):
                         receipt,
                         "remote_failed",
                         remote_error=value,
-                        failure_reason_known=bool(
-                            (isinstance(value, str) and value.strip())
-                            or (
-                                isinstance(value, dict)
-                                and any(
-                                    isinstance(value.get(k), str) and value[k].strip()
-                                    for k in ("error", "message")
-                                )
-                            )
-                        ),
+                        **remote_failure_details(value),
                     )
                     raise WorkflowError(
                         "Remote generation failed: "
@@ -436,6 +503,7 @@ def generate(plan, out, session=None, wait_seconds=600):
         "plan": plan,
         "event_id": None,
         "submissions": 0,
+        "auth_mode": "anonymous",
         "automatic_retry": False,
         "user_payment_submitted": False,
         "public_demo_quota_or_cost_guaranteed": False,
@@ -518,7 +586,7 @@ def resume(out, session=None, wait_seconds=600):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     sub = p.add_subparsers(dest="command", required=True)
-    for name in ("plan", "generate"):
+    for name in ("plan", "generate", "handoff"):
         c = sub.add_parser(name)
         c.add_argument("--image", required=True)
         c.add_argument("--prompt-file", required=True)
@@ -528,8 +596,9 @@ def main():
         c.add_argument("--long-edge", type=int, default=1280)
         c.add_argument("--seed", type=int, default=17)
         c.add_argument("--audio-mode", choices=["mute", "model"], default="mute")
-        if name == "generate":
+        if name in ("generate", "handoff"):
             c.add_argument("--out")
+        if name == "generate":
             c.add_argument("--wait-seconds", type=int, default=600)
     sub.add_parser("doctor")
     for name in ("status", "resume"):
@@ -542,7 +611,7 @@ def main():
     c.add_argument("--out", required=True)
     args = p.parse_args()
     try:
-        if args.command in ("plan", "generate"):
+        if args.command in ("plan", "generate", "handoff"):
             plan = make_plan(
                 args.image,
                 args.prompt_file,
@@ -559,8 +628,17 @@ def main():
                 stamp = datetime.now(timezone(timedelta(hours=8))).strftime(
                     "%Y%m%d-%H%M%S-%f"
                 )
-                out = args.out or str(Path.cwd() / "outputs/image-to-video" / stamp)
-                result = generate(plan, out, wait_seconds=args.wait_seconds)
+                folder = (
+                    "image-to-video-handoff"
+                    if args.command == "handoff"
+                    else "image-to-video"
+                )
+                out = args.out or str(Path.cwd() / "outputs" / folder / stamp)
+                result = (
+                    handoff(plan, out)
+                    if args.command == "handoff"
+                    else generate(plan, out, wait_seconds=args.wait_seconds)
+                )
         elif args.command == "doctor":
             result = doctor()
         elif args.command == "status":

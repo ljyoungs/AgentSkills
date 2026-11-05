@@ -7,8 +7,8 @@
 | 分类 | 技能 | 用途 | 版本／依赖 |
 | --- | --- | --- | --- |
 | **内容创作** `content-creation` | [老高叙事方法 · laogao-story-advisor](skills/content-creation/laogao-story-advisor/) | 选题、递进故事结构、完整口播／分镜、内容与发布包装审核 | v1.1.0；文字策划无必需外部服务 |
-| **内容创作** `content-creation` | [照片一键节奏视频 · photo-beat-video](skills/content-creation/photo-beat-video/) | 上传图片，固定配乐，原图卡点／甜酷造型／人物动态／鼓点定格 | v1.0.0；Python、FFmpeg，完整同款另需生图和图生视频额度 |
-| **内容创作** `content-creation` | [通用图片生成视频 · image-to-video](skills/content-creation/image-to-video/) | 人物、产品、插画或场景图片生成动态素材，独立于配乐与剪辑 | v1.0.0；Python、FFmpeg、可用图生视频服务 |
+| **内容创作** `content-creation` | [照片一键节奏视频 · photo-beat-video](skills/content-creation/photo-beat-video/) | 上传图片，固定配乐，多人造型穿插／人物动态／鼓点定格 | v1.1.0；Python、FFmpeg，完整同款另需生图和图生视频额度 |
+| **内容创作** `content-creation` | [通用图片生成视频 · image-to-video](skills/content-creation/image-to-video/) | 图片生成动态素材，支持失败恢复与离线手动交接，独立于配乐与剪辑 | v1.1.0；Python、FFmpeg、可用图生视频服务 |
 | **社媒运营** `social-media` | [抖音智能引流 · douyin-traffic-psy](skills/social-media/douyin-traffic-psy/) | 评论扫描、关键词匹配和半自动回复 | 原有V3系列；需要其README所列Chrome、WorkBuddy与MCP环境 |
 
 机器可读目录：[catalog.json](catalog.json)。类别按实际技能扩展，不预建空类别。
@@ -44,6 +44,14 @@ v1.1增加[两期原片的参照与规则映射](skills/content-creation/laogao-
 用户无需上传音乐，首次自动获取并校验固定来源，以后使用本地缓存。原照片剪辑可本地执行；完整同款需要当前智能体具备参考图生图、图生视频和脚本导出能力。仅能聊天或读图的界面不保证一键成片；在线额度与免费范围由服务决定。
 
 单独让一张图动起来，使用[通用图片生成视频](skills/content-creation/image-to-video/)。两个目录均可独立安装，不包含个人照片、家庭成片、第三方原始音轨或账号凭据。
+
+v1.1补齐多人造型图按序穿插、每张停留时长，以及在线生成受阻后的离线交接包。额度不足、空错误、未知提交和浏览器连接失败分开处理。随包图生视频脚本使用匿名请求，网页登录不会自动给它账号额度；安装技能也不会增加模型或免费GPU。
+
+只让图片动起来、无需这个固定配乐模板时，附图并发送：
+
+```text
+请安装并使用 https://github.com/ljyoungs/AgentSkills/tree/main/skills/content-creation/image-to-video ，让这张图片按我的描述自然动起来，保持主体和完整道具，交付MP4。
+```
 
 ## 安装与使用
 
