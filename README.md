@@ -7,6 +7,8 @@
 | 分类 | 技能 | 用途 | 版本／依赖 |
 | --- | --- | --- | --- |
 | **内容创作** `content-creation` | [老高叙事方法 · laogao-story-advisor](skills/content-creation/laogao-story-advisor/) | 选题、递进故事结构、完整口播／分镜、内容与发布包装审核 | v1.1.0；文字策划无必需外部服务 |
+| **内容创作** `content-creation` | [照片一键节奏视频 · photo-beat-video](skills/content-creation/photo-beat-video/) | 上传图片，固定配乐，原图卡点／甜酷造型／人物动态／鼓点定格 | v1.0.0；Python、FFmpeg，完整同款另需生图和图生视频额度 |
+| **内容创作** `content-creation` | [通用图片生成视频 · image-to-video](skills/content-creation/image-to-video/) | 人物、产品、插画或场景图片生成动态素材，独立于配乐与剪辑 | v1.0.0；Python、FFmpeg、可用图生视频服务 |
 | **社媒运营** `social-media` | [抖音智能引流 · douyin-traffic-psy](skills/social-media/douyin-traffic-psy/) | 评论扫描、关键词匹配和半自动回复 | 原有V3系列；需要其README所列Chrome、WorkBuddy与MCP环境 |
 
 机器可读目录：[catalog.json](catalog.json)。类别按实际技能扩展，不预建空类别。
@@ -24,6 +26,24 @@
 v1.1增加[两期原片的参照与规则映射](skills/content-creation/laogao-story-advisor/references/episode-mapping.md)、[具体叙事改写手册](skills/content-creation/laogao-story-advisor/references/narrative-mechanics.md)、[大肠杆菌完整口播](skills/content-creation/laogao-story-advisor/examples/ecoli/full-script.md)与[全稿分镜](skills/content-creation/laogao-story-advisor/examples/ecoli/storyboard.md)，以及[事实正确但平淡的审稿例子](skills/content-creation/laogao-story-advisor/examples/borderline-review.md)。
 
 [新输入文字试用记录](evaluations/laogao-story-advisor/v1.1.0/report.md)包含给定材料、两组首次答案和匿名复核。结果支持本轮交付可用，不证明稳定优于未加载Skill或已验证爆款效果。
+
+## 上传图片做同款
+
+安装[照片一键节奏视频](skills/content-creation/photo-beat-video/)后，附上图片并说：
+
+```text
+使用 photo-beat-video，把这些照片做成温柔可爱又很飒的甜酷摇滚卡点视频，使用固定配乐。
+```
+
+支持读取仓库和安装技能的智能体，首次也可直接发送：
+
+```text
+请安装并使用 https://github.com/ljyoungs/AgentSkills/tree/main/skills/content-creation/photo-beat-video ，把这些照片做成甜酷摇滚卡点视频，使用固定配乐，交付MP4。
+```
+
+用户无需上传音乐，首次自动获取并校验固定来源，以后使用本地缓存。原照片剪辑可本地执行；完整同款需要当前智能体具备参考图生图、图生视频和脚本导出能力。仅能聊天或读图的界面不保证一键成片；在线额度与免费范围由服务决定。
+
+单独让一张图动起来，使用[通用图片生成视频](skills/content-creation/image-to-video/)。两个目录均可独立安装，不包含个人照片、家庭成片、第三方原始音轨或账号凭据。
 
 ## 安装与使用
 

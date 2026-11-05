@@ -1,10 +1,18 @@
 {
   "schema_version": 1,
   "repository": "https://github.com/ljyoungs/AgentSkills",
-  "updated": "2026-10-18",
+  "updated": "2026-11-05",
   "categories": [
-    {"id": "content-creation", "label": "内容创作", "description": "选题、故事、口播、分镜及内容包装审核"},
-    {"id": "social-media", "label": "社媒运营", "description": "平台运营、评论研究和有明确交互范围的辅助工具"}
+    {
+      "id": "content-creation",
+      "label": "内容创作",
+      "description": "选题、叙事、图像与视频制作及内容包装审核"
+    },
+    {
+      "id": "social-media",
+      "label": "社媒运营",
+      "description": "平台运营、评论研究和有明确交互范围的辅助工具"
+    }
   ],
   "skills": [
     {
@@ -17,7 +25,9 @@
       "description": "原创选题、递进结构、完整口播与分镜，内容及封面标题正文审核",
       "license": "MIT",
       "distribution": "standalone",
-      "requirements": ["能读取Markdown及相关参考文件的语言模型工具"],
+      "requirements": [
+        "能读取Markdown及相关参考文件的语言模型工具"
+      ],
       "validation_scope": "格式、目录、相对引用、私有资产扫描；四项新输入的两组隔离首次文字输出及匿名复核；无跨客户端、受众或传播效果验证"
     },
     {
@@ -30,8 +40,51 @@
       "description": "原有V3系列的评论扫描、关键词匹配与半自动回复技能",
       "license": "MIT",
       "distribution": "legacy",
-      "requirements": ["WorkBuddy", "Chrome登录状态", "Chrome DevTools MCP", "Python", "Node.js"],
+      "requirements": [
+        "WorkBuddy",
+        "Chrome登录状态",
+        "Chrome DevTools MCP",
+        "Python",
+        "Node.js"
+      ],
       "validation_scope": "本次只验证迁移完整性与目录链接；保留原SKILL元数据版本2.3.0，不把README的V3标签写成新升级；未运行平台自动化"
+    },
+    {
+      "id": "photo-beat-video",
+      "name": "照片一键节奏视频",
+      "activation_name": "photo-beat-video",
+      "category": "content-creation",
+      "path": "skills/content-creation/photo-beat-video",
+      "version": "1.0.0",
+      "description": "固定配乐、原图卡点、甜酷造型、真实图生视频接入与鼓点定格",
+      "license": "MIT",
+      "distribution": "standalone",
+      "requirements": [
+        "Python 3.10+",
+        "Pillow/numpy/requests",
+        "FFmpeg/FFprobe",
+        "首次获取固定原声的网络连接",
+        "完整同款另需参考图生图与可用图生视频服务"
+      ],
+      "validation_scope": "目录格式检查、离线行为测试、真实FFmpeg合成与固定音源缓存检查；未完成跨客户端端到端验证"
+    },
+    {
+      "id": "image-to-video",
+      "name": "通用图片生成视频",
+      "activation_name": "image-to-video",
+      "category": "content-creation",
+      "path": "skills/content-creation/image-to-video",
+      "version": "1.0.0",
+      "description": "图片加动作意图生成真实动态素材；可独立供任何剪辑项目调用",
+      "license": "MIT",
+      "distribution": "standalone",
+      "requirements": [
+        "Python 3.10+",
+        "Pillow/requests",
+        "FFmpeg/FFprobe",
+        "可用图生视频服务及其额度"
+      ],
+      "validation_scope": "模拟服务状态与下载恢复、真实FFmpeg解码；公开演示历史成功不保证当前GPU额度或所有素材效果"
     }
   ]
 }

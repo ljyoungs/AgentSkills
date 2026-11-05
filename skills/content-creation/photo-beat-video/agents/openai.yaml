@@ -1,0 +1,6 @@
+interface:
+  display_name: "照片一键节奏视频"
+  short_description: "上传照片，使用固定配乐制作卡点视频，支持甜酷造型、人物动态与鼓点定格"
+  default_prompt: "使用 $photo-beat-video，把我上传的照片做成温柔可爱又很飒的甜酷摇滚卡点视频，使用固定配乐。"
+policy:
+  allow_implicit_invocation: true

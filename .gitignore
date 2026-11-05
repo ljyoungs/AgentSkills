@@ -18,6 +18,13 @@ _skillhub_meta.json
 .DS_Store
 Thumbs.db
 
+# Local media, generated outputs and tool caches
+outputs/
+runs/
+.cache/
+.ruff_cache/
+*.part
+
 # IDE
 .vscode/
 .idea/

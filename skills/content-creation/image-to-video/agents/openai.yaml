@@ -1,0 +1,6 @@
+interface:
+  display_name: "通用图片生成视频"
+  short_description: "让人物、产品、插画或场景图产生真实主体动作，保留原片、生成回执与检查结果"
+  default_prompt: "使用 $image-to-video，让我上传的图片按描述自然动起来，保持主体、道具和完整构图。"
+policy:
+  allow_implicit_invocation: true
