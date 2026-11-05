@@ -23,9 +23,10 @@ available skill-creator format validator. These checks do not validate real
 platform actions or model behavior. Commit only this repository's intended
 changes; never force-push over concurrent user work.
 
-The standalone image-to-video adapter and its embedded photo-beat-video copy
-must remain byte-identical. Update both copies and their workflow references
-when changing generation, resume, or handoff behavior. Validate with synthetic
-media and simulated provider responses; do not consume GPU quota or use private
-photos merely to test a package update. An anonymous client, a logged-in browser,
-and a reachable schema are distinct states, not evidence of available quota.
+User choice (2026-11-05): publish only photo-beat-video as the video skill in
+this repository. Keep its image-to-video helper inside that package; do not
+restore a standalone image-to-video skill or catalog entry without a new request.
+Validate with synthetic media and simulated provider responses; do not consume
+GPU quota or use private photos merely to test a package update. An anonymous
+client, a logged-in browser, and a reachable schema are distinct states, not
+evidence of available quota.

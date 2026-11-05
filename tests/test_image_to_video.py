@@ -16,7 +16,7 @@ sys.path.insert(
     0,
     str(
         Path(__file__).resolve().parents[1]
-        / "skills/content-creation/image-to-video/scripts"
+        / "skills/content-creation/photo-beat-video/scripts"
     ),
 )
 import image_to_video as i2v
@@ -252,13 +252,6 @@ class WorkflowTests(unittest.TestCase):
         self.assertTrue(result["schema_matches"])
         self.assertEqual(result["auth_mode"], "anonymous")
         self.assertFalse(result["quota_verified"])
-
-    def test_embedded_adapter_matches_independently_installable_package(self):
-        package = Path(__file__).resolve().parents[1] / "skills/content-creation"
-        self.assertEqual(
-            (package / "image-to-video/scripts/image_to_video.py").read_bytes(),
-            (package / "photo-beat-video/scripts/image_to_video.py").read_bytes(),
-        )
 
     def test_handoff_is_offline_portable_and_preserves_inputs(self):
         out = self.out("handoff")

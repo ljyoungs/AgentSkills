@@ -55,7 +55,7 @@
       "activation_name": "photo-beat-video",
       "category": "content-creation",
       "path": "skills/content-creation/photo-beat-video",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "description": "固定配乐、原图卡点、多人造型穿插、真实图生视频接入与鼓点定格",
       "license": "MIT",
       "distribution": "standalone",
@@ -67,24 +67,6 @@
         "完整同款另需参考图生图与可用图生视频服务"
       ],
       "validation_scope": "目录格式、离线额度与手动交接测试、多人图片顺序及真实FFmpeg合成；未完成跨客户端或多人动作生成验证"
-    },
-    {
-      "id": "image-to-video",
-      "name": "通用图片生成视频",
-      "activation_name": "image-to-video",
-      "category": "content-creation",
-      "path": "skills/content-creation/image-to-video",
-      "version": "1.1.0",
-      "description": "图片加动作意图生成动态素材，支持状态恢复与离线手动交接；独立于配乐和剪辑",
-      "license": "MIT",
-      "distribution": "standalone",
-      "requirements": [
-        "Python 3.10+",
-        "Pillow/requests",
-        "FFmpeg/FFprobe",
-        "可用图生视频服务及其额度"
-      ],
-      "validation_scope": "模拟服务额度分类、未知提交不重发、下载恢复、离线交接与真实FFmpeg解码；不保证当前GPU额度或多人自然动作"
     }
   ]
 }

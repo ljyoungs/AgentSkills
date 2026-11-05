@@ -1,6 +1,6 @@
 # 照片一键节奏视频 · photo-beat-video
 
-当前版本：**v1.1.0**。
+当前版本：**v1.1.1**。
 
 上传照片，说一句话，助手按固定配乐制作视频。包含原图卡点与“原图 → 甜酷造型 → 人物动态 → 鼓点定格”两种流程。
 
@@ -73,6 +73,6 @@ ffprobe -version
 
 ## 助手执行入口
 
-读 [SKILL.md](SKILL.md)，甜酷流程再读 [造型和动作设计](references/sweet-cool-rock.md)。单独复用图生视频可用仓库里的独立 image-to-video 包；本包已带所需适配脚本，不强制安装第二个包。
+读 [SKILL.md](SKILL.md)，甜酷流程再读 [造型和动作设计](references/sweet-cool-rock.md)。本包已带人物动态所需适配脚本，无需安装第二个技能。
 
 本地渲染生成 `result.mp4`、`plan.json`、`delivery.json` 和 `qa/`。原始素材与前版均保留。测试和限制见 [验证记录](references/validation.md)。
