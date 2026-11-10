@@ -24,10 +24,8 @@
 | 路径 | 内容 |
 | --- | --- |
 | [`skills/`](skills/) | 正式技能包。分为内容创作 `content-creation/`、社媒运营 `social-media/`、求职工具 `job-search/`。包内 `README.md` 面向使用者，`SKILL.md` 定义智能体工作流。 |
-| [`evaluations/`](evaluations/) | 技能试用记录和复核报告。 |
 | [`scripts/`](scripts/) | 仓库目录与链接的校验脚本。 |
 | [`tests/`](tests/) | 仓库校验和技能组件的回归测试。 |
-| [`AgentSkills/`](AgentSkills/douyin-traffic-psy/README.md) | 旧抖音技能链接的迁移说明，指向上表的正式技能包。 |
 
 ## 维护与许可
 

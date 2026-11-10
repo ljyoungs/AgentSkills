@@ -19,4 +19,4 @@
 
 这不是受众盲测、严格控制的模型实验或跨客户端兼容性认证；每种条件只生成一次。它能说明这些请求得到实际交付，不能证明稳定胜过未加载正文、完全还原某创作者或提升播放量。
 
-[完整输入、两组首次输出及匿名复核记录](https://github.com/ljyoungs/AgentSkills/tree/main/evaluations/laogao-story-advisor/v1.1.0)单独存放于仓库评测目录，不是调用Skill时的必读材料。
+完整输入、两组首次输出和匿名复核可在历史提交中查阅。[v1.1.0 试用原始记录](https://github.com/ljyoungs/AgentSkills/tree/c094026ef3ab3567713437b84ce9f2641fcdc1a4/evaluations/laogao-story-advisor/v1.1.0)
