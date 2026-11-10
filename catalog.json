@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "repository": "https://github.com/ljyoungs/AgentSkills",
-  "updated": "2026-11-05",
+  "updated": "2026-11-10",
   "categories": [
     {
       "id": "content-creation",
@@ -12,6 +12,11 @@
       "id": "social-media",
       "label": "社媒运营",
       "description": "平台运营、评论研究和有明确交互范围的辅助工具"
+    },
+    {
+      "id": "job-search",
+      "label": "求职工具",
+      "description": "简历准备、招聘平台同步和面试准备"
     }
   ],
   "skills": [
@@ -67,6 +72,22 @@
         "完整同款另需参考图生图与可用图生视频服务"
       ],
       "validation_scope": "目录格式、离线额度与手动交接测试、多人图片顺序及真实FFmpeg合成；未完成跨客户端或多人动作生成验证"
+    },
+    {
+      "id": "boss-resume-sync",
+      "name": "BOSS 直聘简历同步",
+      "activation_name": "boss-resume-sync",
+      "category": "job-search",
+      "path": "skills/job-search/boss-resume-sync",
+      "version": "1.0.0",
+      "description": "对照定稿简历、按授权增量更新在线字段和作品链接、回读核验",
+      "license": "MIT",
+      "distribution": "standalone",
+      "requirements": [
+        "能读取简历来源及技能参考文件的智能体",
+        "在线操作需要已登录的 BOSS 直聘页面和可用的浏览器控制能力"
+      ],
+      "validation_scope": "目录、引用与技能格式检查；基于合成简历和模拟表单快照的流程演练，无新增真实账号写入测试"
     }
   ]
 }

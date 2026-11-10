@@ -9,6 +9,7 @@
 | **内容创作** `content-creation` | [老高叙事方法 · laogao-story-advisor](skills/content-creation/laogao-story-advisor/) | 选题、递进故事结构、完整口播／分镜、内容与发布包装审核 | v1.1.0；文字策划无必需外部服务 |
 | **内容创作** `content-creation` | [照片一键节奏视频 · photo-beat-video](skills/content-creation/photo-beat-video/) | 上传图片，固定配乐，多人造型穿插／人物动态／鼓点定格 | v1.1.1；Python、FFmpeg，完整同款另需生图和图生视频额度 |
 | **社媒运营** `social-media` | [抖音智能引流 · douyin-traffic-psy](skills/social-media/douyin-traffic-psy/) | 评论扫描、关键词匹配和半自动回复 | 原有V3系列；需要其README所列Chrome、WorkBuddy与MCP环境 |
+| **求职工具** `job-search` | [BOSS 直聘简历同步 · boss-resume-sync](skills/job-search/boss-resume-sync/) | 对照定稿简历、增量更新在线字段、回读核验 | v1.0.0；在线操作需要已登录的 BOSS 页面和可控制的浏览器 |
 
 机器可读目录：[catalog.json](catalog.json)。类别按实际技能扩展，不预建空类别。
 
@@ -74,20 +75,16 @@ https://github.com/ljyoungs/AgentSkills/tree/main/skills/content-creation/laogao
 skills/
   content-creation/
     laogao-story-advisor/
-      SKILL.md
-      README.md
-      LICENSE
-      NOTICE.md
-      agents/openai.yaml
-      references/
-      examples/
+    photo-beat-video/
   social-media/
     douyin-traffic-psy/
+  job-search/
+    boss-resume-sync/
 catalog.json
 scripts/validate_catalog.py
 ```
 
-新增技能使用`skills/<category>/<skill-name>/`，更新`catalog.json`及上方表格。每个技能的`SKILL.md`须说明适用任务与交付范围；项目路径、凭据、私有声音／媒体和运行数据不随包分享。可执行脚本和自动化依赖在对应README中说明。
+新增技能使用 `skills/<category>/<skill-name>/`，更新 `catalog.json` 和首页表格。技能目录中的 `SKILL.md` 定义工作流，`README.md` 说明安装、依赖和用法。可执行脚本和参考资料放在使用它们的技能目录内。公开包只包含可分发内容。
 
 本地检查：
 
