@@ -48,4 +48,4 @@ python -X utf8 scripts/photo_beat.py make --mode sweet-cool --input photo1.jpg -
 
 随包图生视频客户端为匿名请求，不复用网页登录额度；接口可达不等于账号有额度。只需基础原图卡点时无需在线生成；用户要求完整同款但额度不足时，不能未经说明改交纯照片版。用户明确结束制作后停止生成和重试，只保留现有成果。
 
-给其它聊天工具的可复制指令见 [通用提示词](references/portable-prompt.md)。安装 Skill 不会自动增加平台缺少的模型、脚本执行权或额度。验证范围见 [验证记录](references/validation.md)。
+安装后的对话示例见 [调用示例](references/portable-prompt.md)。实际制作取决于当前环境的模型、脚本执行权和额度。验证范围见 [验证记录](references/validation.md)。

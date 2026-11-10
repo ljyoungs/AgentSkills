@@ -6,33 +6,23 @@
 
 “AI蒸馏”在这里指将有限公开样本中可观察的讲述方法，以及实际改稿反馈整理成可复用指令。它不是模型权重训练、真人替身或官方出品，不包含真人声音。
 
-## 开始使用
+## 一句话安装
 
-将**本目录整体**导入支持Agent Skills的工具，保留`references/`、`examples/`等相对目录。无需API密钥、浏览器或付费配音服务即可使用文字策划能力；实际事实检索能力取决于所用客户端。
-
-给支持读取GitHub目录的工具这个地址，并要求读取`SKILL.md`及当前任务需要的参考文件：
+把下面这句话发给能访问 GitHub 并安装技能的 Codex 或 WorkBuddy。
 
 ```text
-https://github.com/ljyoungs/AgentSkills/tree/main/skills/content-creation/laogao-story-advisor
+请从 https://github.com/ljyoungs/AgentSkills/tree/main/skills/content-creation/laogao-story-advisor 安装 laogao-story-advisor 技能，并确认它已能在当前智能体中调用。
 ```
 
-Codex可使用：
+安装后，直接在对话里说你的任务。文字策划可离线使用，资料检索取决于当前客户端。
 
 ```text
-$skill-installer 安装 https://github.com/ljyoungs/AgentSkills/tree/main/skills/content-creation/laogao-story-advisor
-```
-
-也可将本目录复制到项目的`.agents/skills/laogao-story-advisor/`，然后请求：
-
-```text
-$laogao-story-advisor
+使用 laogao-story-advisor。
 选题：没有大脑的大肠杆菌，怎么找到食物？
 受众：普通中文观众。
 资料：我提供的两份来源摘录。
 先给结构：用“找吃的”贯穿；不要在开头把全部机制揭晓。
 ```
-
-Codex的目录发现与调用方式参见[OpenAI官方说明](https://learn.chatgpt.com/docs/build-skills)。其它客户端按其技能导入方式操作；不宣称本包已在所有平台完成实测。只粘贴`SKILL.md`会缺少参考材料，应同时提供相关文件。
 
 ## 可以怎么用
 

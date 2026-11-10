@@ -4,35 +4,31 @@
 
 上传照片，说一句话，助手按固定配乐制作视频。包含原图卡点与“原图 → 甜酷造型 → 人物动态 → 鼓点定格”两种流程。
 
-## 怎么用
+## 一句话安装
 
-还没安装、但聊天工具能够读取 GitHub 并安装技能时，附上图片并发这一句话：
+把下面这句话发给能读取 GitHub 并安装技能的 Codex、WorkBuddy 等智能体。
 
 ```text
-请安装并使用 https://github.com/ljyoungs/AgentSkills/tree/main/skills/content-creation/photo-beat-video ，把这些照片做成甜酷摇滚卡点视频，使用固定配乐，交付MP4。
+请从 https://github.com/ljyoungs/AgentSkills/tree/main/skills/content-creation/photo-beat-video 安装 photo-beat-video 技能，并确认它已能在当前智能体中调用。
 ```
 
-先把**完整技能目录**导入支持 Agent Skills 且可以执行脚本的工具。安装与运行依赖只需准备一次，后续只传图片：
+## 安装后使用
+
+智能体确认技能可调用后，上传照片并发送制作要求。
 
 ```text
 使用 photo-beat-video，把这些照片做成温柔可爱又很飒的甜酷摇滚卡点视频，使用固定配乐。
 ```
 
-如果只想要原照片卡点：
+如果只做原照片卡点，可以这样说。
 
 ```text
 使用 photo-beat-video，用这些原照片做卡点视频，使用固定配乐，不生成新造型。
 ```
 
-Codex 可以让 `$skill-installer` 安装这个具体目录：
+需要指定多人顺序、道具或结尾动作时，可以参考 [调用示例](references/portable-prompt.md)。
 
-```text
-https://github.com/ljyoungs/AgentSkills/tree/main/skills/content-creation/photo-beat-video
-```
-
-也可复制到项目的 `.agents/skills/photo-beat-video/`，再用 `$photo-beat-video` 调用。安装位置和调用方式见 [OpenAI 官方技能文档](https://learn.chatgpt.com/docs/build-skills)。其它客户端按各自的导入方式操作。[通用提示词](references/portable-prompt.md)可以表达同样需求，但不能替代缺失的工具或安装依赖。
-
-## 一次性运行条件
+## 运行条件
 
 | 制作范围 | 需要的能力 |
 | --- | --- |
@@ -40,13 +36,7 @@ https://github.com/ljyoungs/AgentSkills/tree/main/skills/content-creation/photo-
 | 甜酷造型图 | 当前聊天环境能够参考上传照片生成或编辑图片，且有可用额度 |
 | 人物真正动起来 | 可用的图生视频工具，或随包的公开 LTX 演示适配器及其当时可用的免费 GPU 配额 |
 
-```bash
-python -m pip install -r requirements.txt
-ffmpeg -version
-ffprobe -version
-```
-
-用户无需自己写代码、准备音乐或填时码；具备终端执行能力的助手处理命令。工作环境的安装、联网和工具授权仍按客户端规则执行。
+智能体按客户端规则检查脚本环境、运行依赖、联网和生成工具，并在权限允许时完成配置。遇到缺项时，由智能体说明受影响的制作环节。用户提供照片和制作要求即可，音乐与时码由智能体处理。
 
 ## 固定配乐怎么来
 
@@ -59,17 +49,16 @@ ffprobe -version
 | 环境 | 当前范围 |
 | --- | --- |
 | 本地 Python＋FFmpeg | 可执行配乐缓存、照片剪辑、动态区间剪辑与定格，附离线行为测试 |
-| Codex 等具备脚本和图像工具的智能体 | 可以按 SKILL 编排；出图和在线生成能力由实际账户提供 |
-| WorkBuddy | 可以按其技能与工具入口接入；本公开包未完成该客户端端到端实测 |
-| 豆包普通聊天 | 可参考提示词，不能仅因能够读图片就保证安装并执行此 Python 包；按实际提供的生图、生视频及剪辑功能操作 |
+| Codex 等具备脚本和图像工具的智能体 | 可按技能编排，出图和在线生成取决于当前环境及账号额度 |
+| WorkBuddy | 支持技能安装和脚本执行的环境可尝试接入，本包尚未完成该客户端的端到端实测 |
 
 脚本不调用付费 API、不自动购买或充值。聊天工具、出图与图生视频的免费额度各自计算；安装本技能不等于所有生成免费或无限次。默认不公开发布任何成果。
 
 ## 多人照片与生成受阻
 
-可将不同人物的完整造型图与合照按顺序穿插；保留各自原本外貌、年龄和持物，风格随实际人物与用户要求调整。`--styled` 支持一张或多张，推荐精选2–3张，明确需要时可增加；`--styled-seconds` 可缩短停留，`--max-opening` 可保留更多开头原图。实际时长仍须落在固定音轨内，不额外复制特写凑长度。
+可按用户指定顺序穿插不同人物的完整造型图与合照，保留各自的外貌、年龄和持物。智能体按需要调整造型图数量、停留时间和开头原图数量，成片时长受固定音轨长度约束。
 
-在线生成没有额度或用户想自行操作时，助手可运行随包的 `image_to_video.py handoff`，离线交付参考图、完整动作提示词、参数及说明。之后接收原始MP4、检查，再继续原剪辑。随包客户端使用匿名请求，网页登录不自动提供账号额度；手动包不等于视频已生成。具体判断见 [图生视频操作](references/image-to-video.md)。
+在线生成没有额度或用户想自行操作时，智能体可用随包脚本交付参考图、完整动作提示词、参数及说明，并记录图生视频仍待完成。收到原始 MP4 后，检查素材并继续剪辑。随包客户端使用匿名请求，账号网页的生成额度与脚本额度分别核对。具体判断见 [图生视频操作](references/image-to-video.md)。
 
 ## 助手执行入口
 

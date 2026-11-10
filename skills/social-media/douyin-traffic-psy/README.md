@@ -1,8 +1,8 @@
 # douyin-traffic-psy 🎯
 
-**抖音智能引流助手 V3** — 基于 Chrome DevTools MCP 的半自动化评论引流工具，运行在 [WorkBuddy](https://www.codebuddy.cn/workbuddy) AI 助手中。
+**抖音智能引流助手 V3** — 基于 Chrome DevTools MCP 的半自动化评论引流工具。现有运行说明基于 [WorkBuddy](https://www.codebuddy.cn/workbuddy) 和 Chrome。
 
-> 零快照架构 · 行业预设模板 · 一键环境诊断 · 开箱即用
+> 零快照架构 · 行业预设模板 · 对话配置 · 环境诊断
 
 ---
 
@@ -21,52 +21,34 @@
 
 ---
 
-## 📸 运行截图
+## 一句话安装
 
-> *(截图待补充)*
+把下面这句话发给能访问 GitHub 并安装技能的 Codex 或 WorkBuddy。
 
----
-
-## 🚀 快速开始
-
-### 前置条件
-
-- **Chrome ≥ 120**，启用远程调试：`chrome.exe --remote-debugging-port=9222`
-- **WorkBuddy** 已安装（[下载](https://www.codebuddy.cn/workbuddy)）
-- **chrome-devtools MCP** 已在 WorkBuddy 中配置连接
-- **抖音已在浏览器中登录**
-
-### 安装步骤
-
-1. 克隆本仓库（或下载 `douyin-traffic-psy/` 目录）
-2. 将 `config.example.json` 复制为 `config.json`，按需填写你的话题和回复模板
-3. 在 WorkBuddy 中加载该目录作为技能
-
-```bash
-git clone https://github.com/ljyoungs/AgentSkills.git
-cd AgentSkills/skills/social-media/douyin-traffic-psy
-cp config.example.json config.json
-# 编辑 config.json，填入你的话题配置
+```text
+请从 https://github.com/ljyoungs/AgentSkills/tree/main/skills/social-media/douyin-traffic-psy 安装 douyin-traffic-psy-v3 技能，并确认它已能在当前智能体中调用。
 ```
 
-### 运行环境诊断
+智能体会获取完整技能包，安装后检查是否可调用。当前抖音运行说明基于 WorkBuddy，Codex 的实际抖音操作尚待验证。
 
+## 运行条件
+
+- 已有运行说明以 WorkBuddy Agent、可用的 Chrome DevTools MCP 连接和 Chrome CDP 为基础。
+- 随包 V3 诊断要求 Chrome 144 或更新版本。运行时需要能访问用户已登录抖音的可见标签页；优先复用现有可用的 Chrome 会话及调试连接。登录和验证由用户处理。
+- 环境诊断和配置管理工具需要 Python 3。安装技能不等于获得浏览器访问权限，也不会启动扫描或回复。
+
+## 在对话里使用
+
+先在对话里检查环境：
+
+```text
+使用 douyin-traffic-psy-v3，检查运行环境，先不扫描、不回复。
 ```
-在 WorkBuddy 对话中输入：
-检查 douyin-traffic-psy 环境
-```
 
-或直接运行：
+首次使用时，在对话里说明引流领域、搜索关键词和目标评论。智能体可根据行业预设提出匹配词、回复模板、评论新鲜度和回复上限；你可以修改后确认使用。之后也可以在对话里调整话题、限额和模板。
 
-```bash
-python scripts/setup_wizard.py check
-```
-
-### 开始引流扫描
-
-```
-在 WorkBuddy 对话中输入：
-跑一遍，主题 云南旅游攻略，不点击回复评论先
+```text
+使用 douyin-traffic-psy-v3 扫描「云南旅游攻略」，列出匹配评论和报告，先不要点击或提交回复。
 ```
 
 ---
@@ -75,8 +57,8 @@ python scripts/setup_wizard.py check
 
 ```
 douyin-traffic-psy/
-├── SKILL.md                    # WorkBuddy 技能入口（SOP + 故障排查）
-├── config.example.json         # 示例配置（复制后重命名为 config.json）
+├── SKILL.md                    # 技能入口（SOP + 故障排查）
+├── config.example.json         # 对话初始化的配置示例
 ├── .gitignore
 ├── README.md
 │
@@ -89,35 +71,6 @@ douyin-traffic-psy/
 └── docs/
     ├── architecture.md         # 技术架构说明
     └── CHANGELOG.md            # 版本更新记录
-```
-
----
-
-## ⚙️ 配置说明
-
-编辑 `config.json`（从 `config.example.json` 复制）：
-
-```json
-{
-  "topics": [
-    {
-      "name": "我的话题",
-      "search_keyword": "搜索关键词",
-      "enabled": true,
-      "keywords": ["求推荐", "怎么", "多少钱"],
-      "reply_templates": ["你的回复模板1", "你的回复模板2"],
-      "max_videos": 3,
-      "max_replies_per_video": 1,
-      "max_daily_replies": 15
-    }
-  ],
-  "global_settings": {
-    "reply_interval_seconds": 30,
-    "max_daily_total_replies": 50,
-    "captcha_detection": true,
-    "comment_freshness_days": 7
-  }
-}
 ```
 
 ---
@@ -137,6 +90,7 @@ douyin-traffic-psy/
 
 - 本工具仅供**学习研究**和**合规营销**目的使用
 - 请勿高频刷量，遵守抖音平台服务条款
+- 安装、诊断或扫描请求不等于授权回复。只有用户明确要求回复时才操作，遇到验证码或平台限制时暂停。
 - 建议每日回复不超过 30 条，避免账号风险
 - **作者不对账号封禁等后果负责**
 

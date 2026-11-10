@@ -5,6 +5,16 @@ This is the user's shared skill collection. Keep standalone packages under
 when adding, moving or renaming a skill. Add categories when a real package needs
 them; do not create empty category trees.
 
+Each public skill README uses one chat request to Codex, WorkBuddy, or another
+capable agent as the installation entry. Include the canonical
+GitHub skill-folder URL and the `activation_name` from `catalog.json`. The agent
+is responsible for obtaining the complete package, installing through the current
+client, and checking whether the client can discover it. Keep runtime prerequisites
+separate from installation. Avoid presenting manual cloning, copying, importing,
+shell commands, or prompt-only loading as alternative user installation routes.
+Report missing permissions, network access, or client support accurately. Keep
+installation separate from executing a skill against a real account.
+
 Read the selected package before changing it. Preserve existing skill behavior
 when the task is classification or navigation. Keep legacy migration notes for
 moved public paths. Do not copy private project records or raw third-party assets
